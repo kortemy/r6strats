@@ -1,0 +1,35 @@
+// Import Vuetify styling
+@require '~vuetify/src/stylus/main.styl'
+
+.page
+  @extend .fade-transition
+
+.icon 
+  display: inline-flex !important 
+  
+.label
+  color: rgba(255, 255, 255, .7)
+  
+.container
+  max-width: unset !important
+
+.clickable 
+  cursor: pointer !important
+
+.icon-large::before 
+  font-size: 32px !important 
+
+.icon-medium::before 
+  font-size: 24px !important
+
+.icon-small::before 
+  font-size: 18px !important
+  
+.nested 
+  padding-left: 8px
+  padding-right: 8px
+
+.link 
+  font-weight bold
+  cursor pointer
+  color #f57c00 

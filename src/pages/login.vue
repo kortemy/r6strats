@@ -1,0 +1,97 @@
+<template>
+  <v-container class="wrapper">
+    <v-card>
+      <v-card-title>
+        <v-avatar>
+          <v-icon class="icon-medium">{{$icons('login')}}</v-icon>
+        </v-avatar>
+        <strong>Sign in</strong>
+      </v-card-title>
+      <!-- <v-card-text>
+        <v-container grid-list-md>
+          <v-layout row wrap>
+            <v-flex xs12 sm4>
+              <v-btn 
+                block
+                color="blue">
+                <i :class="`fab ${$icons('twitter')}`"></i>
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 sm4>
+              <v-btn 
+                block
+                color="blue darken-3">
+                <i :class="`fab ${$icons('facebook')}`"></i>
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 sm4>
+              <v-btn 
+                block
+                color="red darken-1">
+                <i :class="`fab ${$icons('google')}`"></i>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card-text> -->
+      <v-card-text>
+        <v-text-field
+          v-model="email"
+          label="Email">
+        </v-text-field>
+        <v-text-field
+          type="password"
+          v-model="password"
+          label="Password">
+        </v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn 
+          flat>
+          Reset password
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn
+          @click="doLogin"
+          color="primary">
+          <v-icon class="icon-small">{{$icons('login')}}</v-icon>
+          <span class="nested">Sign in</span>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-container>
+</template>
+<style scoped>
+.wrapper {
+  max-width: 560px !important;
+}
+</style>
+
+<script>
+import UserService from '@/core/UserService'
+
+export default {
+  created () {
+    this.userService = new UserService()
+  },
+  methods: {
+    async doLogin () {
+      this.$eventBus.$emit('loading', true)
+      try {
+        await this.userService.login(this.email, this.password)
+        this.$eventBus.$emit('loading', false)
+        this.$router.push('/')
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  },
+  data () {
+    return {
+      email: null,
+      password: null,
+      userService: null
+    }
+  }
+}
+</script>
