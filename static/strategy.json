@@ -1,0 +1,25 @@
+{
+  "code": "123",
+  "side": "attack",
+  "mode": "bomb",
+  "author": {
+    "code": "45678123",
+    "name": "dusan"
+  },
+  "map": {
+    "code": "oregon",
+    "name": "Oregon"
+  },
+  "objective": {
+    "code": "laundry",
+    "name": "Laundry Room"
+  },
+  "operators": [
+    { "code": "ash", "name": "Ash", "role": "Roam clear from @1ftower, push from below." },
+    { "code": "thatcher", "name": "Thatcher", "role": "EMP reinforced hatch in the @2fbedroom, watch angle towards @1fmeetinghall." },
+    { "code": "lion", "name": "Lion", "role": "Scan just before blowing up the hatch in Bedroom." }
+  ],
+  "details": "Pinch the achors in the laundry both from the main lobby hatch and the tower while watching for flankers from kitchen and dorms.",
+  "rating": 40,
+  "comments": 12
+}

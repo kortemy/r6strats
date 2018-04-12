@@ -1,0 +1,8 @@
+[
+  { "code": "ash", "name": "Ash", "side": "attack" },
+  { "code": "hibana", "name": "Hibana", "side": "attack" },
+  { "code": "thatcher", "name": "Thatcher", "side": "attack" },
+  { "code": "rook", "name": "Rook", "side": "defense" },
+  { "code": "bandit", "name": "Bandit", "side": "defense" },
+  { "code": "mira", "name": "Mira", "side": "defense" }
+]

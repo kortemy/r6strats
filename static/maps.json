@@ -1,0 +1,36 @@
+[
+  {
+    "code": "oregon",
+    "name": "Oregon",
+    "objectives": [
+      { "code": "laundry", "name": "Laundry Room", "modes": ["bomb", "secure"] },
+      { "code": "tower", "name": "Tower", "modes": ["bomb"] },
+      { "code": "dorm", "name": "Kid's Dorm", "modes": ["bomb", "secure", "hostage"] },
+      { "code": "meeting", "name": "Meeting Hall", "modes": ["secure", "hostage"] }
+    ],
+    "layers": ["1f", "2f", "roof"],
+    "locations": [
+      { "code": "1fmainhall", "name": "1F Main Hall", "layer": "1f", "x": 5000, "y": 500 },
+      { "code": "1fmeetinghall", "name": "1F Meeting Hall", "layer": "1f", "x": 700, "y": 300 },
+      { "code": "1ftower", "name": "1F Tower", "layer": "1f", "x": 700, "y": 100 },
+      { "code": "1fkitchen", "name": "1F Kitchen", "layer": "1f", "x": 500, "y": 400 },
+      { "code": "2fbedroom", "name": "2F Bedroom", "layer": "2f", "x": 750, "y": 550 }
+    ]
+  },
+  {
+    "code": "bank",
+    "name": "Bank",
+    "objectives": [
+      { "code": "vault", "name": "Vault", "modes": ["bomb", "secure"] },
+      { "code": "archive", "name": "Archives", "modes": ["bomb", "secure"] },
+      { "code": "admin", "name": "Admin Offices", "modes": ["bomb"] },
+      { "code": "openarea", "name": "Open Area", "modes": ["secure"] }
+    ],
+    "layers": ["1f", "2f", "roof"],
+    "locations": [
+      { "code": "b1-vault", "name": "B1 Vault" },
+      { "code": "b1-server", "name": "B1 Server Room" },
+      { "code": "1f-tellers", "name": "1F Tellers" }
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "code": "45678123",
+  "name": "dusan",
+  "email": "dusan@test.com",
+  "likes": [
+    "123", "234"
+  ]
+}

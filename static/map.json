@@ -1,0 +1,18 @@
+{
+  "code": "oregon",
+  "name": "Oregon",
+  "objectives": [
+    { "code": "laundry", "name": "Laundry Room", "modes": ["bomb", "secure"] },
+    { "code": "tower", "name": "Tower", "modes": ["bomb"] },
+    { "code": "dorm", "name": "Kid's Dorm", "modes": ["bomb", "secure", "hostage"] },
+    { "code": "meeting", "name": "Meeting Hall", "modes": ["secure", "hostage"] }
+  ],
+  "layers": ["1f", "2f", "roof"],
+  "locations": [
+    { "code": "1fmainhall", "name": "1F Main Hall", "layer": "1f", "x": 5000, "y": 500 },
+    { "code": "1fmeetinghall", "name": "1F Meeting Hall", "layer": "1f", "x": 700, "y": 300 },
+    { "code": "1ftower", "name": "1F Tower", "layer": "1f", "x": 700, "y": 100 },
+    { "code": "1fkitchen", "name": "1F Kitchen", "layer": "1f", "x": 500, "y": 400 },
+    { "code": "2fbedroom", "name": "2F Bedroom", "layer": "2f", "x": 750, "y": 550 }
+  ]
+}
