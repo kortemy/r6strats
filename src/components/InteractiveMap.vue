@@ -26,9 +26,17 @@
       <div class="draggable" ref="draggable">
         <template v-for="loc in locations">
           <div :key="loc.code" class="location" :style="`left: ${loc.x}px; top: ${loc.y}px;`">
-            <v-chip :color="tagColor(loc.code)" text-color="white">
-              {{loc.name}}
-            </v-chip>
+            <template v-if="isObjective(loc.code)">
+              <v-chip color="green" text-color="white">
+                <v-icon class="icon-small">{{$icons('objective')}}</v-icon>
+                <span class="nested"><strong>{{loc.name}}</strong></span>
+              </v-chip>
+            </template>
+            <template v-else>
+              <v-chip :color="tagColor(loc.code)" text-color="white">
+                {{loc.name}}
+              </v-chip>
+            </template>
           </div>
         </template>
         <img v-if="!!map" :src="`/static/images/maps/${map.code}/${layer}.jpg`"/>
@@ -51,6 +59,7 @@
   .draggable {
     position: absolute;
     z-index: 9;
+    transition: all .5s ease 0s;
   }
 
   .location {
@@ -58,6 +67,10 @@
     z-index: 10;
   }
 
+  .location:hover {
+    /* font-weight: bold; */
+  }
+ 
   .controls {
     position: absolute;
     z-index: 11;
@@ -79,7 +92,7 @@
 <script>
   export default {
     props: ['map', 'focus', 'objective'],
-    mounted () {
+    created () {
       if (this.map) {
         this.preload()
       }
@@ -94,8 +107,8 @@
         this.bounds.el.style.opacity = 1
         this.resize(0)
 
-        let x = -1 * parseInt((this.draggable.w - this.bounds.w) / 2)
-        let y = -1 * parseInt((this.draggable.h - this.bounds.h) / 2)
+        let x = -1 * parseInt((this.draggable.el.clientWidth - this.bounds.el.clientWidth) / 2)
+        let y = -1 * parseInt((this.draggable.el.clientHeight - this.bounds.el.clientHeight) / 2)
         this.move(x, y)
 
         this.draggable.el.onmousedown = this.startMoving
@@ -103,6 +116,8 @@
       startMoving (evt) {
         evt = evt || window.event
         evt.preventDefault()
+
+        this.draggable.el.style.transition = 'none'
 
         this.bounds.el.style.cursor = 'move'
 
@@ -123,6 +138,7 @@
         }
       },
       stopMoving (evt) {
+        this.draggable.el.style.transition = 'all .5s ease 0s'
         this.bounds.el.style.cursor = 'default'
         document.onmousemove = null
         document.onmouseup = null
@@ -133,8 +149,8 @@
       },
       moveTo (loc) {
         this.layer = loc.layer
-        let x = (1 * parseInt(this.bounds.w / 2)) - loc.x
-        let y = (1 * parseInt(this.bounds.h / 2)) - loc.y
+        let x = (1 * parseInt(this.bounds.el.clientWidth / 2)) - loc.x
+        let y = (1 * parseInt(this.bounds.el.clientHeight / 2)) - loc.y
         this.move(x, y)
       },
       resize (delta) {
@@ -143,6 +159,9 @@
       },
       tagColor (code) {
         return this.focus === code ? 'primary' : 'secondary'
+      },
+      isObjective (code) {
+        return this.objective ? this.objective.locations.indexOf(code) > -1 : false
       }
     },
     data () {
@@ -152,14 +171,11 @@
       }
     },
     computed: {
-      objectives () {
-        return this.objective.split('&')
-      },
       layers () {
         return this.map ? this.map.layers : []
       },
       locations () {
-        return this.map ? this.map.locations.filter(loc => loc.layer === this.layer) : []
+        return this.map ? this.map.locations.filter(loc => loc.layer === 'g' || loc.layer === this.layer) : []
       },
       focusedLocation () {
         return this.map ? this.map.locations.filter(loc => loc.code === this.focus)[0] : null

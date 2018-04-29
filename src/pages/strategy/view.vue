@@ -82,7 +82,7 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-card>
-              <interactive-map :map="map" :focus="locationFocus"></interactive-map>
+              <interactive-map :map="map" :objective="strat.objective" :focus="locationFocus"></interactive-map>
             </v-card>
           </v-flex>
         </v-layout>

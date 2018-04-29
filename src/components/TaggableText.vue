@@ -19,13 +19,16 @@
 import mentions from 'mention-parser'
 export default {
   props: ['text', 'sources'],
+  mounted () {
+    // console.log(this.sources)
+  },
   methods: {
     hover (tag) {
       this.$emit('hover', tag)
     },
     value (code) {
       let source = this.sources.filter(source => source.code === code)[0]
-      return source ? source.name : ''
+      return source ? source.name : code
     }
   },
   computed: {

@@ -7,17 +7,15 @@
     "name": "dusan"
   },
   "map": {
-    "code": "oregon",
-    "name": "Oregon"
+    "code": "bank",
+    "name": "Bank"
   },
-  "objective": {
-    "code": "laundry",
-    "name": "Laundry Room"
-  },
+  "objective": { "code": "ceoexec", "name": "CEO Office / Executive Lounge", "modes": ["bomb"], "locations": [ "2f_ceo", "2f_exec" ] },
   "operators": [
-    { "code": "ash", "name": "Ash", "role": "Roam clear from @1ftower, push from below." },
-    { "code": "thatcher", "name": "Thatcher", "role": "EMP reinforced hatch in the @2fbedroom, watch angle towards @1fmeetinghall." },
-    { "code": "lion", "name": "Lion", "role": "Scan just before blowing up the hatch in Bedroom." }
+    { "code": "ash", "name": "Ash", "role": "Roam clear from @2f_skylight, push towards @2f_hallway." },
+    { "code": "thatcher", "name": "Thatcher", "role": "EMP reinforced walls in the @2f_skylight." },
+    { "code": "lion", "name": "Lion", "role": "Scan and push into @2f_stock." },
+    { "code": "glaz", "name": "Glaz", "role": "Camp @g_parking and watch for movement in @2f-front and @2f_walkway." }
   ],
   "details": "Pinch the achors in the laundry both from the main lobby hatch and the tower while watching for flankers from kitchen and dorms.",
   "rating": 40,
