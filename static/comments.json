@@ -2,21 +2,21 @@
   { "author": {
     "code": "45678123",
     "name": "dusan"
-  }, "timestamp": 123456789, "text": "Lorem ipsum" },
+  }, "code": "1", "timestamp": 123456789, "text": "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum " },
   { "author": {
     "code": "123456",
     "name": "dragana"
-  }, "timestamp": 123456789, "text": "Lorem ipsum one" },
+  }, "code": "2", "timestamp": 123456789, "text": "Lorem ipsum one" },
   { "author": {
     "code": "45678123",
     "name": "dusan"
-  }, "timestamp": 123456789, "text": "Lorem ipsum two" },
+  }, "code": "3", "timestamp": 123456789, "text": "Lorem ipsum two" },
   { "author": {
     "code": "123456",
     "name": "dragana"
-  }, "timestamp": 123556789, "text": "Lorem ipsum three" },
+  }, "code": "4", "timestamp": 123556789, "text": "Lorem ipsum three" },
   { "author": {
     "code": "45678123",
     "name": "dusan"
-  }, "timestamp": 123557789, "text": "Lorem ipsum four" }
+  }, "code": "5", "timestamp": 123557789, "text": "Lorem ipsum four" }
 ]

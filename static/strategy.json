@@ -15,9 +15,9 @@
     { "code": "ash", "name": "Ash", "role": "Roam clear from @2f_skylight, push towards @2f_hallway." },
     { "code": "thatcher", "name": "Thatcher", "role": "EMP reinforced walls in the @2f_skylight." },
     { "code": "lion", "name": "Lion", "role": "Scan and push into @2f_stock." },
-    { "code": "glaz", "name": "Glaz", "role": "Camp @g_parking and watch for movement in @2f-front and @2f_walkway." }
+    { "code": "glaz", "name": "Glaz", "role": "Camp @g_parking and watch for movement in @2f_front and @2f_walkway." }
   ],
-  "details": "Pinch the achors in the laundry both from the main lobby hatch and the tower while watching for flankers from kitchen and dorms.",
+  "details": "okay go to <span data-code=\"b1_vault\">B1 Vault</span>&nbsp;after that <span data-code=\"b1_server\">B1 Server Room</span>&nbsp;and you're done.",
   "rating": 40,
   "comments": 12
 }

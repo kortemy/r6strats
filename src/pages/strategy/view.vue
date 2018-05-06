@@ -59,7 +59,7 @@
             <span class="nested"><strong>Strategy details</strong></span>
           </v-card-actions>
           <v-card-text>
-            {{strat.details}}
+            <taggable-text :text="strat.details" :sources="taggableSources" v-on:focus="focusLocation"></taggable-text>
           </v-card-text>
           <v-expansion-panel expand>
             <v-expansion-panel-content v-for="role in strat.operators" :key="role.code">
@@ -71,9 +71,23 @@
               </div>
               <v-card>
                 <v-card-text>
-                  <taggable-text :text="role.role" :sources="map.locations" v-on:hover="focusLocation"></taggable-text>
+                  <taggable-text :text="role.role" :sources="taggableSources" v-on:focus="focusLocation"></taggable-text>
                 </v-card-text>
               </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-card>
+
+        <v-card class="comments-box">
+          <v-expansion-panel expand>
+            <v-expansion-panel-content>
+              <div slot="header" class="nested-header card__actions">
+                <v-avatar>
+                  <v-icon class="icon-medium">{{$icons('comment')}}</v-icon>
+                </v-avatar>
+                <span class="nested"><strong>Comments ({{strat.comments.length}})</strong></span>
+              </div>
+              <comment-section :comments="strat.comments" :sources="taggableSources" @focus="focusLocation"></comment-section>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-card>
@@ -81,9 +95,7 @@
       <v-flex d-flex sm12 md6>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card>
-              <interactive-map :map="map" :objective="strat.objective" :focus="locationFocus"></interactive-map>
-            </v-card>
+            <interactive-map :map="map" :objective="strat.objective" :focus="locationFocus"></interactive-map>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -96,23 +108,33 @@
   position: absolute;
   font-size: 12px;
 }
+.comments-box {
+  margin-top: 8px;
+}
+.nested-header {
+  margin: -12px -24px;
+}
 </style>
 
 <script>
   import StrategyService from '@/core/StrategyService'
   import InteractiveMap from '@/components/InteractiveMap'
   import TaggableText from '@/components/TaggableText'
+  import CommentSection from '@/components/CommentSection'
 
   const strategyService = new StrategyService()
   export default {
     components: {
       interactiveMap: InteractiveMap,
-      taggableText: TaggableText
+      taggableText: TaggableText,
+      commentSection: CommentSection
     },
-    async mounted () {
+    async created () {
       let strat = await strategyService.getStrat(this.$route.params.code)
       let map = await strategyService.getMap(strat.map.code)
+      let comments = await strategyService.getComments(this.strat.code)
       this.strat = strat
+      this.strat.comments = comments
       this.map = map
     },
     methods: {
@@ -153,13 +175,16 @@
           operators: [],
           details: null,
           rating: 0,
-          comments: 0
+          comments: []
         },
         map: null,
         locationFocus: null
       }
     },
     computed: {
+      taggableSources () {
+        return this.map ? this.map.locations : []
+      },
       isOwned () {
         return this.$currentUser ? this.$currentUser.code === this.strat.author.code : false
       },

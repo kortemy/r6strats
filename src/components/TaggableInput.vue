@@ -72,14 +72,14 @@ export default {
           lookup: 'name',
           fillAttr: 'code',
           selectTemplate: function (item) {
-            return `@${item.original.code}`
+            return `<span data-code="${item.original.code}">${item.string}</span>`
           }
         })
         this.tribute.attach(this.$refs.editable)
       }
     },
     update (event) {
-      this.$emit('input', this.$refs.editable.innerText)
+      this.$emit('input', this.$refs.editable.innerHTML)
     },
     focus () {
       this.addClass('input-group--focused')

@@ -2,7 +2,7 @@
   <span>
     <template v-for="c in chunks" >
       <span :key="c.value" >
-        <span v-if="c.tag" v-on:click="hover(c.tag)" class="tag"><strong>{{c.value}}</strong></span>
+        <span v-if="c.tag" v-on:click="focus(c.tag)" class="tag"><strong>{{c.value}}</strong></span>
         <span v-else>{{c.value}}</span>
       </span>
     </template>
@@ -23,8 +23,8 @@ export default {
     // console.log(this.sources)
   },
   methods: {
-    hover (tag) {
-      this.$emit('hover', tag)
+    focus (tag) {
+      this.$emit('focus', tag)
     },
     value (code) {
       let source = this.sources.filter(source => source.code === code)[0]
@@ -36,23 +36,38 @@ export default {
       if (!this.text) {
         return []
       }
-      let tags = mentions(this.text).get()
-      let start = 0
+
+      let parser = new DOMParser()
+      let data = parser.parseFromString(this.text, 'text/html')
+      let body = data.querySelector('body')
+
+      data.querySelectorAll('span').forEach(m => {
+        let tag = m.getAttribute('data-code')
+        if (tag) {
+          m.innerText = '@' + tag
+        }
+      })
+
+      let text = body.innerText
       let chunks = []
+      let tags = mentions(text).get()
+      let start = 0
+      console.log(tags)
       tags.forEach(tag => {
-        let end = this.text.indexOf(tag)
-        let chunk = this.text.substring(start, end)
+        let end = text.indexOf(tag)
+        let chunk = text.substring(start, end)
         chunks.push({
           value: chunk
         })
         let code = tag.replace('@', '')
+        let value = this.value(code)
         chunks.push({
           tag: code,
-          value: this.value(code)
+          value: value
         })
         start = end + tag.length
       })
-      let lastChunk = this.text.substring(start, this.text.length)
+      let lastChunk = text.substring(start, text.length)
       chunks.push({
         value: lastChunk
       })

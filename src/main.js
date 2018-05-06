@@ -11,6 +11,7 @@ import App from '@/layouts/default'
 import '@/plugins/firebase'
 import '@/plugins/eventBus'
 import '@/plugins/utils'
+import '@/plugins/moment'
 import '@/plugins/store'
 
 Vue.use(Vuetify, {
