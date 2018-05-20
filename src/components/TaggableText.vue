@@ -52,7 +52,6 @@ export default {
       let chunks = []
       let tags = mentions(text).get()
       let start = 0
-      console.log(tags)
       tags.forEach(tag => {
         let end = text.indexOf(tag)
         let chunk = text.substring(start, end)

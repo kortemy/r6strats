@@ -44,6 +44,9 @@
           v-model="password"
           label="Password">
         </v-text-field>
+        <div class="red--text" v-if="message">
+          {{message}}
+        </div>
       </v-card-text>
       <v-card-actions>
         <v-btn 
@@ -72,17 +75,19 @@ import UserService from '@/core/UserService'
 
 export default {
   created () {
-    this.userService = new UserService()
+    this.userService = new UserService(this.$firestore)
   },
   methods: {
     async doLogin () {
       this.$eventBus.$emit('loading', true)
+      this.message = null
       try {
         await this.userService.login(this.email, this.password)
         this.$eventBus.$emit('loading', false)
         this.$router.push('/')
       } catch (err) {
-        console.log(err)
+        this.message = this.validation[err.code] || 'Unknown error, please reload and try again.'
+        this.$eventBus.$emit('loading', false)
       }
     }
   },
@@ -90,7 +95,13 @@ export default {
     return {
       email: null,
       password: null,
-      userService: null
+      userService: null,
+      message: null,
+      validation: {
+        'auth/invalid-email': 'Invalid email address',
+        'auth/user-not-found': 'Incorrect email address or password',
+        'auth/wrong-password': 'Incorrect email address or password'
+      }
     }
   }
 }

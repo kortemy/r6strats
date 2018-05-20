@@ -9,8 +9,8 @@
       </v-card-title>
       <v-card-text>
         <v-text-field
-          v-model="username"
-          label="Username">
+          v-model="name"
+          label="Name">
         </v-text-field>
         <v-text-field
           v-model="email"
@@ -21,6 +21,9 @@
           v-model="password"
           label="Password">
         </v-text-field>
+        <div class="red--text" v-if="message">
+          {{message}}
+        </div>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -45,26 +48,33 @@ import UserService from '@/core/UserService'
 
 export default {
   created () {
-    this.userService = new UserService()
+    this.userService = new UserService(this.$firestore)
   },
   methods: {
     async doRegister () {
       this.$eventBus.$emit('loading', true)
       try {
-        await this.userService.createUser(this.username, this.email, this.password)
+        let user = await this.userService.createUser(this.name, this.email, this.password)
+        this.$eventBus.$emit('login', user)
         this.$eventBus.$emit('loading', false)
         this.$router.push('/')
       } catch (err) {
-        console.log(err)
+        this.message = this.validation[err.code] || 'Unknown error, please reload and try again.'
+        this.$eventBus.$emit('loading', false)
       }
     }
   },
   data () {
     return {
-      username: null,
+      name: null,
       email: null,
       password: null,
-      userService: null
+      userService: null,
+      message: null,
+      validation: {
+        'auth/invalid-email': 'Invalid email address',
+        'auth/auth/email-already-in-use': 'Email address is already taken'
+      }
     }
   }
 }

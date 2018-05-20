@@ -1,30 +1,40 @@
 import firebase from 'firebase'
-import axios from 'axios'
-
-const API_URL = 'http://localhost:8080/static'
 
 class UserService {
+  constructor (firestore) {
+    this.db = firestore.collection('users')
+  }
+
   async createUser (name, email, password) {
     let auth = await firebase.auth().createUserWithEmailAndPassword(email, password)
-    await auth.updateProfile({
-      displayName: name
-    })
-    return auth
+    let ref = await this.db.add({})
+    let user = {
+      id: ref.id,
+      uid: auth.user.uid,
+      name: name,
+      email: email,
+      likes: []
+    }
+    await this.db.doc(ref.id).set(user)
+    return user
   }
 
   async login (email, password) {
-    let auth = await firebase.auth().signInWithEmailAndPassword(email, password)
-    // handle on backend
-    return auth
+    await firebase.auth().signInWithEmailAndPassword(email, password)
   }
 
   async logout () {
     await firebase.auth().signOut()
   }
 
-  async getUser (token) {
-    let user = await axios.get(`${API_URL}/user.json?token=${token}`)
-    return user.data
+  async getUser (id) {
+    return this.db.doc(id)
+  }
+
+  async getUserByAuthUid (uid) {
+    let result = await this.db.where('uid', '==', uid).get()
+    if (result.empty) return null
+    return result.docs[0].data()
   }
 }
 

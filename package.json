@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "firebase": "^4.12.1",
+    "firebase": "^5.0.3",
     "mention-parser": "0.0.1",
     "tributejs": "^3.2.0",
     "vue": "^2.5.2",

@@ -61,12 +61,5 @@ export default {
   async getMap (code) {
     let response = await axios.get(`${API_URL}/map.json`)
     return response.data
-  },
-
-  async getUser (token) {
-    return {
-      username: 'Kortemy',
-      email: 'kortemy@gmail.com'
-    }
   }
 }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueFire from 'vuefire'
 import firebase from 'firebase'
+import 'firebase/firestore'
 
 Vue.prototype.$firebase = Vue.prototype.$firebase || firebase.initializeApp({
   apiKey: 'AIzaSyBaSVFWBHXSEiurMGfQfWRKZZOchumR_14',
@@ -10,5 +11,11 @@ Vue.prototype.$firebase = Vue.prototype.$firebase || firebase.initializeApp({
   storageBucket: 'siege-strat-book.appspot.com',
   messagingSenderId: '729660110077'
 })
+
+const firestore = Vue.prototype.$firestore || firebase.firestore()
+const settings = { timestampsInSnapshots: true }
+firestore.settings(settings)
+
+Vue.prototype.$firestore = firestore
 
 Vue.use(VueFire)

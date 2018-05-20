@@ -73,27 +73,28 @@
 
 <script>
 import UserService from '@/core/UserService'
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   created () {
-    this.userService = new UserService()
+    this.userService = new UserService(this.$firestore)
     this.$firebase.auth().onAuthStateChanged(this.authChanged)
     this.$eventBus.$on('error', this.handleError)
+    this.$eventBus.$on('login', this.login)
     this.$eventBus.$on('loading', show => (this.loading = show))
   },
   methods: {
     async authChanged (auth) {
       if (auth) {
-        let idToken = await auth.getIdToken(false)
-        let user = await this.userService.getUser(idToken)
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + idToken
-        this.$vuex.commit('token', idToken)
-        this.$vuex.commit('save', user)
-      } else {
-        delete axios.defaults.headers.common['Authorization']
-        this.$vuex.commit('logout')
+        let user = await this.userService.getUserByAuthUid(auth.uid)
+        if (user) {
+          return this.login(user)
+        }
       }
+      this.$vuex.commit('logout')
+    },
+    login (user) {
+      return this.$vuex.commit('save', user)
     },
     handleError (err) {
       if (err) console.trace(err)
@@ -105,7 +106,7 @@ export default {
       drawer: false,
       miniVariant: false,
       loading: false,
-      title: 'Siege Strat Book'
+      title: 'Rainbow Six Strats'
     }
   },
   computed: {
