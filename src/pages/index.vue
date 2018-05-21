@@ -63,8 +63,7 @@
 <script>
   import StrategyService from '@/core/StrategyService'
   import StratCard from '@/components/StratCard'
-  
-  const strategyService = new StrategyService()
+
   export default {
     components: {
       stratCard: StratCard
@@ -74,6 +73,7 @@
         this.$router.push('/search')
         return
       }
+      this.strategyService = new StrategyService(this.$firestore)
       this.myStrats.query = { author: this.$currentUser.code }
       this.favStrats.query = { code: this.$currentUser.likes }
       this.load()
@@ -82,17 +82,16 @@
       async load () {
         try {
           await this.loadMore('myStrats')
-          // await this.loadMore('favStrats')
         } catch (err) { this.$eventBus.$emit('error', err) }
       },
       async loadMore (prop) {
-        // let limit = this[prop].limit + 6
-        let data = await strategyService.getStrats(this[prop].query)
+        let data = await this.strategyService.getStrats(this[prop].query)
         this[prop].data = data || []
       }
     },
     data () {
       return {
+        strategyService: null,
         myStrats: {
           show: true,
           limit: 6,

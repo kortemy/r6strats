@@ -91,31 +91,31 @@
   import StrategyService from '@/core/StrategyService'
   import StratCard from '@/components/StratCard'
   import RadioGroup from '@/components/RadioGroup'
-  
-  const strategyService = new StrategyService()
+
   export default {
     components: {
       stratCard: StratCard,
       radioGroup: RadioGroup
     },
-    async mounted () {
-      try {
-        this.data = await strategyService.getStaticData()
-        this.selected.side = this.sides[0]
-        this.selected.mode = this.modes[0]
-        this.load()
-      } catch (err) { this.error = err }
+    async created () {
+      this.strategyService = new StrategyService(this.$firestore)
+      this.data = await this.strategyService.getStaticData()
+      this.selected.side = this.data.sides[0]
+      this.selected.mode = this.data.modes[0]
+      console.log(this.selected)
+      this.load()
     },
     methods: {
       async load () {
         try {
-          let result = await strategyService.getStrats(this.query)
+          let result = await this.strategyService.getStrats(this.query)
           this.result = result || []
         } catch (err) { this.error = err }
       }
     },
     data () {
       return {
+        strategyService: null,
         selected: {
           side: {},
           mode: {},
@@ -130,13 +130,16 @@
     },
     computed: {
       query () {
-        return {
+        let query = {
           side: this.selected.side.code,
           mode: this.selected.mode.code,
-          map: this.selected.map ? this.selected.map.code : null,
-          objective: this.selected.objective,
-          operators: this.selected.operators.map(op => op.code)
+          'map.code': this.selected.map ? this.selected.map.code : null,
+          'objective.code': this.selected.objective
         }
+        this.selected.operators.forEach(op => {
+          query[`operators.${op.code}.code`] = op.code
+        })
+        return query
       },
       modes () {
         return this.data.modes || []

@@ -120,25 +120,20 @@
   import InteractiveMap from '@/components/InteractiveMap'
   import TaggableInput from '@/components/TaggableInput'
 
-  const strategyService = new StrategyService()
   export default {
     components: {
       interactiveMap: InteractiveMap,
       taggableInput: TaggableInput
     },
     async created () {
-      let strat = await strategyService.getStrat(this.$route.params.code)
-      let data = await strategyService.getStaticData()
-      let map = await strategyService.getMap(strat.map.code)
-      this.data = data
-      this.strat = strat
-      this.map = map
+      this.strategyService = new StrategyService(this.$firestore)
+      this.data = await this.strategyService.getStaticData()
+      this.strat = await this.strategyService.getStrat(this.$route.params.code)
+      this.map = await this.strategyService.getMap(this.strat.map.code)
       if (!this.isOwned) {
         this.$router.push('/')
       }
     },
-    // async mounted () {
-    // },
     methods: {
       operatorName (code) {
         return this.strat.operators.filter(op => (op.code === code))[0].name
@@ -161,6 +156,7 @@
     },
     data () {
       return {
+        strategyService: null,
         strat: {
           code: null,
           side: null,

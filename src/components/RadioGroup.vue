@@ -37,6 +37,11 @@ export default {
     getClass (option) {
       return this.selected === option.code ? 'primary--text' : ''
     }
+  },
+  watch: {
+    options () {
+      this.selected = this.selected || this.options.length > 0 ? this.options[0].code : null
+    }
   }
 }
 </script>

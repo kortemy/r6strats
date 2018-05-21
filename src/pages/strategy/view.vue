@@ -122,7 +122,6 @@
   import TaggableText from '@/components/TaggableText'
   import CommentSection from '@/components/CommentSection'
 
-  const strategyService = new StrategyService()
   export default {
     components: {
       interactiveMap: InteractiveMap,
@@ -130,9 +129,10 @@
       commentSection: CommentSection
     },
     async created () {
-      let strat = await strategyService.getStrat(this.$route.params.code)
-      let map = await strategyService.getMap(strat.map.code)
-      let comments = await strategyService.getComments(this.strat.code)
+      this.strategyService = new StrategyService(this.$firestore)
+      let strat = await this.strategyService.getStrat(this.$route.params.code)
+      let map = await this.strategyService.getMap(strat.map.code)
+      let comments = await this.strategyService.getComments(this.strat.code)
       this.strat = strat
       this.strat.comments = comments
       this.map = map
@@ -155,11 +155,11 @@
           return
         }
         if (this.isLiked) {
-          await strategyService.likeStrat(this.$currentUser)
+          await this.strategyService.likeStrat(this.$currentUser)
           this.$vuex.commit('dislike', this.strat.code)
           return
         }
-        await strategyService.dislikeStrat(this.$currentUser)
+        await this.strategyService.dislikeStrat(this.$currentUser)
         this.$vuex.commit('like', this.strat.code)
       }
     },

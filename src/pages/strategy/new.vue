@@ -131,7 +131,6 @@
   import InteractiveMap from '@/components/InteractiveMap'
   import RadioGroup from '@/components/RadioGroup'
 
-  const strategyService = new StrategyService()
   export default {
     components: {
       stratCard: StratCard,
@@ -140,7 +139,8 @@
       interactiveMap: InteractiveMap
     },
     async created () {
-      let data = await strategyService.getStaticData()
+      this.strategyService = new StrategyService(this.$firestore)
+      let data = await this.strategyService.getStaticData()
       this.data = data
       this.selected.side = this.sides[0]
       this.selected.mode = this.modes[0]
@@ -152,6 +152,7 @@
     },
     data () {
       return {
+        strategyService: null,
         valid: false,
         loading: false,
         selected: {
