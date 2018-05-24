@@ -73,20 +73,28 @@
         this.$router.push('/search')
         return
       }
+      this.$eventBus.$emit('loading', true)
       this.strategyService = new StrategyService(this.$firestore)
-      this.myStrats.query = { author: this.$currentUser.code }
-      this.favStrats.query = { code: this.$currentUser.likes }
+      this.myStrats.query = { 'author.code': this.$currentUser.id }
+      this.favStrats.query = { [`liked.${this.$currentUser.id}`]: true }
       this.load()
     },
     methods: {
       async load () {
+        this.$eventBus.$emit('loading', true)
         try {
           await this.loadMore('myStrats')
-        } catch (err) { this.$eventBus.$emit('error', err) }
+        } catch (err) {
+          this.$eventBus.$emit('loading', false)
+          this.$eventBus.$emit('error', err)
+        }
       },
       async loadMore (prop) {
+        this.$eventBus.$emit('loading', true)
         let data = await this.strategyService.getStrats(this[prop].query)
         this[prop].data = data || []
+        this[prop].limit = this[prop].limit + 6
+        this.$eventBus.$emit('loading', false)
       }
     },
     data () {

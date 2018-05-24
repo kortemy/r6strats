@@ -98,6 +98,7 @@
       radioGroup: RadioGroup
     },
     async created () {
+      this.$eventBus.$emit('loading', true)
       this.strategyService = new StrategyService(this.$firestore)
       this.modes = await this.strategyService.getModes()
       this.sides = await this.strategyService.getSides()
@@ -108,8 +109,10 @@
     methods: {
       async load () {
         try {
+          this.$eventBus.$emit('loading', true)
           let result = await this.strategyService.getStrats(this.query)
           this.result = result || []
+          this.$eventBus.$emit('loading', false)
         } catch (err) { this.error = err }
       }
     },
@@ -156,6 +159,7 @@
         this.selected.objective = null
       },
       error (err) {
+        this.$eventBus.$emit('loading', false)
         this.$emit('error', err)
       }
     }

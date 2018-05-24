@@ -126,15 +126,17 @@
       taggableInput: TaggableInput
     },
     async created () {
+      if (!this.isOwned) {
+        this.$router.push('/')
+      }
+      this.$eventBus.$emit('loading', true)
       this.strategyService = new StrategyService(this.$firestore)
       this.modes = await this.strategyService.getModes()
       this.sides = await this.strategyService.getSides()
       this.operators = await this.strategyService.getOperators()
       this.strat = await this.strategyService.getStrat(this.$route.params.code)
       this.map = await this.strategyService.getMap(this.strat.map.code)
-      if (!this.isOwned) {
-        this.$router.push('/')
-      }
+      this.$eventBus.$emit('loading', false)
     },
     methods: {
       focusLocation (code) {

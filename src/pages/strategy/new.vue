@@ -139,22 +139,27 @@
       interactiveMap: InteractiveMap
     },
     async created () {
+      if (!this.$currentUser) {
+        this.$router.push('/search')
+        return
+      }
+      this.$eventBus.$emit('loading', true)
       this.strategyService = new StrategyService(this.$firestore)
       this.modes = await this.strategyService.getModes()
       this.sides = await this.strategyService.getSides()
       this.maps = await this.strategyService.getMaps()
       this.operators = await this.strategyService.getOperators()
+      this.$eventBus.$emit('loading', false)
     },
     methods: {
       save () {
-        this.loading = true
+
       }
     },
     data () {
       return {
         strategyService: null,
         valid: false,
-        loading: false,
         selected: {
           side: 'attack',
           mode: 'bomb',

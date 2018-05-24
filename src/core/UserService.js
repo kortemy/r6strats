@@ -2,20 +2,21 @@ import firebase from 'firebase'
 
 class UserService {
   constructor (firestore) {
-    this.db = firestore.collection('users')
+    this.db = {
+      users: firestore.collection('users')
+    }
   }
 
   async createUser (name, email, password) {
     let auth = await firebase.auth().createUserWithEmailAndPassword(email, password)
-    let ref = await this.db.add({})
+    let ref = await this.db.users.add({})
     let user = {
       id: ref.id,
       uid: auth.user.uid,
       name: name,
-      email: email,
-      likes: []
+      email: email
     }
-    await this.db.doc(ref.id).set(user)
+    await this.db.users.doc(ref.id).set(user)
     return user
   }
 
@@ -28,11 +29,12 @@ class UserService {
   }
 
   async getUser (id) {
-    return this.db.doc(id)
+    let user = await this.db.users.doc(id).get()
+    return user.data()
   }
 
   async getUserByAuthUid (uid) {
-    let result = await this.db.where('uid', '==', uid).get()
+    let result = await this.db.users.where('uid', '==', uid).get()
     if (result.empty) return null
     return result.docs[0].data()
   }

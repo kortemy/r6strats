@@ -129,11 +129,13 @@
       commentSection: CommentSection
     },
     async created () {
+      this.$eventBus.$emit('loading', true)
       this.strategyService = new StrategyService(this.$firestore)
       this.strat = await this.strategyService.getStrat(this.$route.params.code)
       this.map = await this.strategyService.getMap(this.strat.map.code)
       this.comments = await this.strategyService.getComments(this.strat.code)
       this.operators = Object.values(this.strat.operators)
+      this.$eventBus.$emit('loading', false)
     },
     methods: {
       operatorName (code) {

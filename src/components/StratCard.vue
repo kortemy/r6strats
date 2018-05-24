@@ -13,7 +13,7 @@
           </v-flex>
           <v-flex xs12>
             <div class="paragraph">
-              <strong>{{mapName}}</strong>&nbsp;{{objectiveName}}
+              <span class="map-name"><strong>{{mapName}}</strong></span>&nbsp;<span class="map-location">[{{objectiveName}}]</span>
             </div>
           </v-flex>
         </v-layout>
@@ -64,6 +64,12 @@
   }
   .owned {
     border: 2px solid #81D4FA;
+  }
+  .map-name {
+    font-size: 1.1em;
+  }
+  .map-location {
+    font-size: .9em;
   }
 
 </style>

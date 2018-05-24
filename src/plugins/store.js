@@ -14,7 +14,6 @@ const store = new Vuex.Store({
       state.token = value
     },
     save (state, value) {
-      console.log(value)
       if (!value.likes) value.likes = []
       state.user = value
     },
