@@ -38,7 +38,7 @@
         <div v-if="$currentUser">
         <v-menu offset-y >
           <v-btn slot="activator" flat>
-            <v-icon class="icon-medium">{{$icons('user')}}</v-icon>
+            <v-icon class="icon-medium">{{'user' | icon}}</v-icon>
             <!-- <v-icon>more_vert</v-icon> -->
             <span class="nested">{{$currentUser.name}}</span>
           </v-btn>

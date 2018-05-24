@@ -30,14 +30,15 @@ let _icons = {
   'google': 'fa-google'
 }
 
+Vue.filter('capitalize', (string) => {
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : string
+})
+Vue.filter('icon', (code) => {
+  return _icons[code]
+})
+
 Vue.mixin({
   methods: {
-    $capitalize (string) {
-      return string ? string.charAt(0).toUpperCase() + string.slice(1) : string
-    },
-    $rating (rating) {
-      return rating > 0 ? '+' + rating : rating
-    },
     $icons (code) {
       return _icons[code]
     }

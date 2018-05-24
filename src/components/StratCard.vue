@@ -5,10 +5,10 @@
         <v-layout column>
           <v-flex xs12>
             <v-avatar size="36" tile>
-              <v-icon dark class="icon-small">{{$icons(strat.side)}}</v-icon>
+              <v-icon dark class="icon-small">{{strat.side | icon}}</v-icon>
             </v-avatar>
             <v-avatar size="36" tile>
-              <v-icon dark class="icon-small">{{$icons(strat.mode)}}</v-icon>
+              <v-icon dark class="icon-small">{{strat.mode | icon}}</v-icon>
             </v-avatar>
           </v-flex>
           <v-flex xs12>
@@ -29,11 +29,11 @@
       </template> 
       <v-spacer />
       <v-avatar size="36" tile>
-        <v-icon dark class="icon-medium" color="secondary" >{{$icons('comment')}}</v-icon>
+        <v-icon dark class="icon-medium" color="secondary" >{{'comment' | icon}}</v-icon>
         <span class="badge accent--text"><strong>{{strat.comments}}</strong></span>
       </v-avatar>
       <v-avatar size="36" tile class="clickable">
-        <v-icon dark class="icon-medium" :color="isOwned ? 'info' : isLiked ? 'error' : 'secondary'">{{$icons('like')}}</v-icon>
+        <v-icon dark class="icon-medium" :color="isOwned ? 'info' : isLiked ? 'error' : 'secondary'">{{'like' | icon}}</v-icon>
         <span class="badge accent--text"><strong>{{strat.rating}}</strong></span>
       </v-avatar>
     </v-card-actions>

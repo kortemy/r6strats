@@ -3,7 +3,7 @@
     <v-card dark tile class="collapser-card">
       <v-card-actions>
         <v-avatar>
-          <v-icon class="icon-medium">{{$icons('home')}}</v-icon>
+          <v-icon class="icon-medium">{{'home' | icon}}</v-icon>
         </v-avatar>
         <span class="card-title"><strong>My Strategies</strong></span>
         <v-spacer></v-spacer>
@@ -27,7 +27,7 @@
     <v-card dark tile class="collapser-card">
       <v-card-actions>
         <v-avatar>
-          <v-icon class="icon-medium">{{$icons('like')}}</v-icon>
+          <v-icon class="icon-medium">{{'like' | icon}}</v-icon>
         </v-avatar>
         <span class="card-title"><strong>Liked Strategies</strong></span>
         <v-spacer></v-spacer>

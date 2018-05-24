@@ -8,31 +8,31 @@
             <div class="nested">
               <v-chip>
                 <v-avatar>
-                  <v-icon light class="icon-small">{{$icons(strat.mode)}}</v-icon>
+                  <v-icon light class="icon-small">{{strat.mode | icon}}</v-icon>
                 </v-avatar>
-                {{$capitalize(strat.mode)}}
+                {{strat.mode | capitalize}}
               </v-chip>
               <v-chip>
                 <v-avatar>
-                  <v-icon light class="icon-small">{{$icons(strat.side)}}</v-icon>
+                  <v-icon light class="icon-small">{{strat.side | icon}}</v-icon>
                 </v-avatar>
-                {{$capitalize(strat.side)}}
+                {{strat.side | capitalize}}
               </v-chip>
               <v-chip>
                 <v-avatar>
-                  <v-icon light class="icon-small">{{$icons('map')}}</v-icon>
+                  <v-icon light class="icon-small">{{'map' | icon}}</v-icon>
                 </v-avatar>
                 {{strat.map.name}}
               </v-chip>
               <v-chip>
                 <v-avatar>
-                  <v-icon light class="icon-small">{{$icons('objective')}}</v-icon>
+                  <v-icon light class="icon-small">{{'objective' | icon}}</v-icon>
                 </v-avatar>
                 {{strat.objective.name}}
               </v-chip>
               <v-chip class="clickable" @click="userClicked">
                 <v-avatar>
-                  <v-icon light class="icon-small">{{$icons('user')}}</v-icon>
+                  <v-icon light class="icon-small">{{'user' | icon}}</v-icon>
                 </v-avatar>
                 {{strat.author.name}}
               </v-chip>
@@ -40,15 +40,15 @@
             <v-spacer></v-spacer>
 
             <v-avatar size="36" tile class="clickable">
-              <v-icon dark class="icon-large" :color="isOwned ? 'info' : isLiked ? 'red' : 'secondary'">{{$icons('like')}}</v-icon>
+              <v-icon dark class="icon-large" :color="isOwned ? 'info' : isLiked ? 'red' : 'secondary'">{{'like' | icon}}</v-icon>
               <span class="badge accent--text"><strong>{{strat.rating}}</strong></span>
             </v-avatar>
             <v-btn v-if="isOwned" color="primary" @click="save">
-              <v-icon dark class="icon-small">{{$icons('edit')}}</v-icon>
+              <v-icon dark class="icon-small">{{'edit' | icon}}</v-icon>
               <span class="nested accent--text"><strong>Save</strong></span>
             </v-btn>
             <v-btn v-if="isOwned" color="error" @click="remove">
-              <v-icon dark class="icon-small">{{$icons('delete')}}</v-icon>
+              <v-icon dark class="icon-small">{{'delete' | icon}}</v-icon>
               <span class="nested accent--text"><strong>Delete</strong></span>
             </v-btn>
           </v-card-actions>
@@ -58,7 +58,7 @@
         <v-card>
           <v-card-actions>
             <v-avatar>
-              <v-icon class="icon-medium">{{$icons('strategy')}}</v-icon>
+              <v-icon class="icon-medium">{{'strategy' | icon}}</v-icon>
             </v-avatar>
             <span class="nested"><strong>Strategy details</strong></span>
           </v-card-actions>
@@ -68,7 +68,7 @@
           <v-card-text>
             <v-select
               label="Operators"
-              :items="operators"
+              :items="filteredOperators"
               v-model="strat.operators"
               item-text="name"
               item-value="code"
@@ -84,7 +84,7 @@
             <v-avatar size="42" tile>
               <img :src="`/static/images/ops/${role.code}/badge.png`"/>
             </v-avatar>
-            <span class="nested"><strong>{{operatorName(role.code)}} instructions</strong></span>
+            <span class="nested"><strong>{{role.name}} instructions</strong></span>
             <taggable-input 
               :key="role.code"
               :label="`${role.name} instructions`"
@@ -127,7 +127,9 @@
     },
     async created () {
       this.strategyService = new StrategyService(this.$firestore)
-      this.data = await this.strategyService.getStaticData()
+      this.modes = await this.strategyService.getModes()
+      this.sides = await this.strategyService.getSides()
+      this.operators = await this.strategyService.getOperators()
       this.strat = await this.strategyService.getStrat(this.$route.params.code)
       this.map = await this.strategyService.getMap(this.strat.map.code)
       if (!this.isOwned) {
@@ -135,12 +137,6 @@
       }
     },
     methods: {
-      operatorName (code) {
-        return this.strat.operators.filter(op => (op.code === code))[0].name
-      },
-      locationName (code) {
-        return this.map.locations.filter(loc => (loc.code === code))[0].name
-      },
       focusLocation (code) {
         this.locationFocus = code
       },
@@ -169,9 +165,9 @@
           rating: 0,
           comments: 0
         },
+        operators: [],
         map: null,
-        locationFocus: null,
-        data: null
+        locationFocus: null
       }
     },
     computed: {
@@ -181,8 +177,8 @@
       isLiked () {
         return this.$currentUser ? this.$currentUser.likes.indexOf(this.strat.code) !== -1 : false
       },
-      operators () {
-        return this.data ? this.data.operators.filter(op => op.side === this.strat.side) : []
+      filteredOperators () {
+        return this.operators.filter(op => op.side === this.strat.side)
       }
     }
   }

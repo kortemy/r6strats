@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>
         <v-avatar>
-          <v-icon class="icon-medium">{{$icons('register')}}</v-icon>
+          <v-icon class="icon-medium">{{'register' | icon}}</v-icon>
         </v-avatar>
         <strong>Create an account</strong>
       </v-card-title>
@@ -30,7 +30,7 @@
         <v-btn
           @click="doRegister"
           color="primary">
-          <v-icon class="icon-small">{{$icons('register')}}</v-icon>
+          <v-icon class="icon-small">{{'register' | icon}}</v-icon>
           <span class="nested">Submit</span>
         </v-btn>
       </v-card-actions>

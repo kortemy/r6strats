@@ -3,12 +3,12 @@
     <v-card dark tile>
       <v-card-actions>
         <v-avatar>
-          <v-icon class="icon-medium">{{$icons('search')}}</v-icon>
+          <v-icon class="icon-medium">{{'search' | icon}}</v-icon>
         </v-avatar>
         <span class="card-title"><strong>Find Strategies</strong></span>
         <v-spacer></v-spacer>
         <v-btn color="primary" @click="load">
-          <v-icon class="">{{$icons('confirm')}}</v-icon>
+          <v-icon class="">{{'confirm' | icon}}</v-icon>
           <span class="nested">Apply</span>
         </v-btn>
       </v-card-actions>
@@ -51,7 +51,7 @@
             <v-flex xs12 sm12 md12 lg12>
               <v-select
                 label="With operators"
-                :items="operators"
+                :items="filteredOperators"
                 v-model="selected.operators"
                 item-text="name"
                 item-value="code"
@@ -99,10 +99,10 @@
     },
     async created () {
       this.strategyService = new StrategyService(this.$firestore)
-      this.data = await this.strategyService.getStaticData()
-      this.selected.side = this.data.sides[0]
-      this.selected.mode = this.data.modes[0]
-      console.log(this.selected)
+      this.modes = await this.strategyService.getModes()
+      this.sides = await this.strategyService.getSides()
+      this.maps = await this.strategyService.getMaps()
+      this.operators = await this.strategyService.getOperators()
       this.load()
     },
     methods: {
@@ -117,13 +117,16 @@
       return {
         strategyService: null,
         selected: {
-          side: {},
-          mode: {},
+          side: 'attack',
+          mode: 'bomb',
           map: null,
           objective: null,
           operators: []
         },
-        data: {},
+        sides: [],
+        modes: [],
+        maps: [],
+        operators: [],
         error: null,
         result: []
       }
@@ -131,8 +134,8 @@
     computed: {
       query () {
         let query = {
-          side: this.selected.side.code,
-          mode: this.selected.mode.code,
+          side: this.selected.side,
+          mode: this.selected.mode,
           'map.code': this.selected.map ? this.selected.map.code : null,
           'objective.code': this.selected.objective
         }
@@ -141,29 +144,11 @@
         })
         return query
       },
-      modes () {
-        return this.data.modes || []
-      },
-      sides () {
-        return this.data.sides || []
-      },
-      maps () {
-        return this.data.maps || []
-      },
-      operators () {
-        return this.data.operators ? this.data.operators.filter(op => op.side === this.selected.side.code) : []
+      filteredOperators () {
+        return this.operators.filter(op => op.side === this.selected.side)
       },
       objectives () {
-        return this.selected.map ? this.selected.map.objectives.filter(ob => ob.modes.indexOf(this.selected.mode.code) > -1) : []
-      },
-      strings () {
-        return {
-          side: this.selected.side.name,
-          mode: this.selected.mode.name,
-          map: this.selected.map ? this.selected.map.name : 'any map',
-          objective: this.selected.objective ? `(${this.selected.objective.name})` : '',
-          operators: this.selected.operators.length > 0 ? this.selected.operators.map(op => op.name).join(', ') : 'any operator'
-        }
+        return this.selected.map ? this.selected.map.objectives.filter(ob => ob.modes.indexOf(this.selected.mode) > -1) : []
       }
     },
     watch: {

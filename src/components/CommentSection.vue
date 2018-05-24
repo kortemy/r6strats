@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-actions class="nested">
+    <!-- <v-card-actions class="nested">
       <taggable-input
         label="Add new comment"
         v-model="newCommentText"
@@ -8,21 +8,21 @@
         required
         ></taggable-input>
       <v-btn color="primary">
-        <v-icon>{{$icons('confirm')}}</v-icon>
+        <v-icon>{{'confirm' | icon}}</v-icon>
         <span class="nested accent--text"><strong>Add</strong></span>
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
     <div class="nested" v-for="comment in sortedComments" :key="comment.code">
       <v-card-actions>
         <v-chip class="clickable" @click="userClicked(comment.author)">
           <v-avatar>
-            <v-icon light class="icon-small">{{$icons('user')}}</v-icon>
+            <v-icon light class="icon-small">{{'user' | icon}}</v-icon>
           </v-avatar>
           {{comment.author.name}}
         </v-chip>
         <v-spacer></v-spacer>
         <span class="grey--text">
-          <i>{{ comment.timestamp | moment('MMM Do YYYY') }}</i>
+          <i>{{ comment.timestamp.seconds | moment('h:mm A, MMM Do YYYY') }}</i>
         </span>
       </v-card-actions>
       <v-card-text>

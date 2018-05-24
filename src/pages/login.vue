@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>
         <v-avatar>
-          <v-icon class="icon-medium">{{$icons('login')}}</v-icon>
+          <v-icon class="icon-medium">{{'login' | icon}}</v-icon>
         </v-avatar>
         <strong>Sign in</strong>
       </v-card-title>
@@ -14,21 +14,21 @@
               <v-btn 
                 block
                 color="blue">
-                <i :class="`fab ${$icons('twitter')}`"></i>
+                <i :class="`fab ${'twitter' | icon}`"></i>
               </v-btn>
             </v-flex>
             <v-flex xs12 sm4>
               <v-btn 
                 block
                 color="blue darken-3">
-                <i :class="`fab ${$icons('facebook')}`"></i>
+                <i :class="`fab ${'facebook' | icon}`"></i>
               </v-btn>
             </v-flex>
             <v-flex xs12 sm4>
               <v-btn 
                 block
                 color="red darken-1">
-                <i :class="`fab ${$icons('google')}`"></i>
+                <i :class="`fab ${'google' | icon}`"></i>
               </v-btn>
             </v-flex>
           </v-layout>
@@ -57,7 +57,7 @@
         <v-btn
           @click="doLogin"
           color="primary">
-          <v-icon class="icon-small">{{$icons('login')}}</v-icon>
+          <v-icon class="icon-small">{{'login' | icon}}</v-icon>
           <span class="nested">Sign in</span>
         </v-btn>
       </v-card-actions>

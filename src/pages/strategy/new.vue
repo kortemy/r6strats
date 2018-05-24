@@ -6,12 +6,12 @@
         <v-card>
           <v-card-actions>
             <v-avatar>
-              <v-icon class="icon-medium">{{$icons('edit')}}</v-icon>
+              <v-icon class="icon-medium">{{'edit' | icon}}</v-icon>
             </v-avatar>
             <span class="nested"><strong>New Strategy</strong></span>
             <v-spacer></v-spacer>
             <v-btn color="primary">
-              <v-icon class="icon-small">{{$icons('confirm')}}</v-icon>
+              <v-icon class="icon-small">{{'confirm' | icon}}</v-icon>
               <span class="nested">Save</span>
             </v-btn>
           </v-card-actions>
@@ -21,7 +21,7 @@
         <v-card>
           <v-card-actions>
             <v-avatar>
-              <v-icon class="icon-medium">{{$icons('strategy')}}</v-icon>
+              <v-icon class="icon-medium">{{'strategy' | icon}}</v-icon>
             </v-avatar>
             <span class="nested"><strong>Strategy details</strong></span>
           </v-card-actions>
@@ -70,7 +70,7 @@
                 <v-flex xs12>
                   <v-select
                     label="Operators"
-                    :items="operators"
+                    :items="filteredOperators"
                     v-model="selected.operators"
                     item-text="name"
                     item-value="code"
@@ -140,10 +140,10 @@
     },
     async created () {
       this.strategyService = new StrategyService(this.$firestore)
-      let data = await this.strategyService.getStaticData()
-      this.data = data
-      this.selected.side = this.sides[0]
-      this.selected.mode = this.modes[0]
+      this.modes = await this.strategyService.getModes()
+      this.sides = await this.strategyService.getSides()
+      this.maps = await this.strategyService.getMaps()
+      this.operators = await this.strategyService.getOperators()
     },
     methods: {
       save () {
@@ -156,44 +156,38 @@
         valid: false,
         loading: false,
         selected: {
-          side: {},
-          mode: {},
+          side: 'attack',
+          mode: 'bomb',
           map: null,
           objective: null,
           operators: [],
           details: null
         },
-        data: null
+        modes: [],
+        sides: [],
+        maps: [],
+        operators: []
       }
     },
     computed: {
       payload () {
         return {
-          side: this.selected.side.code,
-          mode: this.selected.mode.code,
+          side: this.selected.side,
+          mode: this.selected.mode,
           map: this.selected.map,
           objective: this.selected.objective,
           operators: this.selected.operators,
           details: this.selected.details
         }
       },
-      operators () {
-        return this.data ? this.data.operators.filter(op => op.side === this.selected.side.code) : []
-      },
-      modes () {
-        return this.data ? this.data.modes : []
-      },
-      sides () {
-        return this.data ? this.data.sides : []
-      },
-      maps () {
-        return this.data ? this.data.maps : []
+      filteredOperators () {
+        return this.operators.filter(op => op.side === this.selected.side)
       },
       locations () {
         return this.selected.map ? this.selected.map.locations : []
       },
       objectives () {
-        return this.selected.map ? this.selected.map.objectives.filter(ob => ob.modes.indexOf(this.selected.mode.code) > -1) : []
+        return this.selected.map ? this.selected.map.objectives.filter(ob => ob.modes.indexOf(this.selected.mode) > -1) : []
       }
     },
     watch: {

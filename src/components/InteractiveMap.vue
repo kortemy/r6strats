@@ -2,7 +2,7 @@
   <v-card>
     <v-card-actions>
       <v-avatar>
-        <v-icon class="icon-medium">{{$icons('map')}}</v-icon>
+        <v-icon class="icon-medium">{{'map' | icon}}</v-icon>
       </v-avatar>
       <span class="nested"><strong>{{map ? map.name : 'No map selected'}}</strong></span>
     </v-card-actions>
@@ -14,10 +14,10 @@
       </div>
       <div class="controls right">
         <v-btn @click="resize(-0.1)" fab small light>
-          <v-icon>{{$icons('minus')}}</v-icon>
+          <v-icon>{{'minus' | icon}}</v-icon>
         </v-btn>
         <v-btn @click="resize(0.1)" fab small light>
-          <v-icon>{{$icons('plus')}}</v-icon>
+          <v-icon>{{'plus' | icon}}</v-icon>
         </v-btn>
       </div>
       <div class="controls bottom right nested">
@@ -28,7 +28,7 @@
           <div :key="loc.code" class="location" :style="`left: ${loc.x}px; top: ${loc.y}px;`">
             <template v-if="isObjective(loc.code)">
               <v-chip color="green" text-color="white">
-                <v-icon class="icon-small">{{$icons('objective')}}</v-icon>
+                <v-icon class="icon-small">{{'objective' | icon}}</v-icon>
                 <span class="nested"><strong>{{loc.name}}</strong></span>
               </v-chip>
             </template>
