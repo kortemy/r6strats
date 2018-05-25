@@ -186,7 +186,7 @@
         }
       },
       filteredOperators () {
-        return this.operators.filter(op => op.side === this.selected.side)
+        return this.operators.filter(op => op.side === this.selected.side || op.side === 'both')
       },
       locations () {
         return this.selected.map ? this.selected.map.locations : []

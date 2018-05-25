@@ -73,7 +73,7 @@
 
 <script>
 import UserService from '@/core/UserService'
-// import axios from 'axios'
+import ImportService from '@/core/ImportService'
 
 export default {
   created () {
@@ -82,6 +82,12 @@ export default {
     this.$eventBus.$on('error', this.handleError)
     this.$eventBus.$on('login', this.login)
     this.$eventBus.$on('loading', show => (this.loading = show))
+
+    window.addEventListener('keyup', (e) => {
+      if (e.keyCode === 113) {
+        this.doImport()
+      }
+    })
   },
   methods: {
     async authChanged (auth) {
@@ -98,6 +104,11 @@ export default {
     },
     handleError (err) {
       if (err) console.trace(err)
+    },
+    async doImport () {
+      console.log('yay')
+      let importService = new ImportService(this.$firestore)
+      await importService.addOperators()
     }
   },
   data () {

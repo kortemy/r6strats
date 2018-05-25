@@ -148,7 +148,7 @@
         return query
       },
       filteredOperators () {
-        return this.operators.filter(op => op.side === this.selected.side)
+        return this.operators.filter(op => op.side === this.selected.side || op.side === 'both')
       },
       objectives () {
         return this.selected.map ? this.selected.map.objectives.filter(ob => ob.modes.indexOf(this.selected.mode) > -1) : []

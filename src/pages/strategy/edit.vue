@@ -180,7 +180,7 @@
         return this.$currentUser ? this.$currentUser.likes.indexOf(this.strat.code) !== -1 : false
       },
       filteredOperators () {
-        return this.operators.filter(op => op.side === this.strat.side)
+        return this.operators.filter(op => op.side === this.strat.side || op.side === 'both')
       }
     }
   }
