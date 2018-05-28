@@ -27,13 +27,13 @@
         <template v-for="loc in locations">
           <div :key="loc.code" class="location" :style="`left: ${loc.x}px; top: ${loc.y}px;`">
             <template v-if="isObjective(loc.code)">
-              <v-chip color="green" text-color="white">
+              <v-chip label color="green" text-color="white" @click="theFocus = loc.code">
                 <v-icon class="icon-small">{{'objective' | icon}}</v-icon>
                 <span class="nested"><strong>{{loc.name}}</strong></span>
               </v-chip>
             </template>
             <template v-else>
-              <v-chip :color="tagColor(loc.code)" text-color="white">
+              <v-chip label :color="tagColor(loc.code)" text-color="white" @click="theFocus = loc.code">
                 {{loc.name}}
               </v-chip>
             </template>
@@ -65,10 +65,15 @@
   .location {
     position: absolute;
     z-index: 10;
+    opacity: .9;
   }
 
   .location:hover {
-    /* font-weight: bold; */
+    opacity: 1;
+  }
+
+  .location .chip {
+    background-color: rgba(0, 0, 0, .3)
   }
  
   .controls {
@@ -148,7 +153,9 @@
         this.draggable.el.style.top = y + 'px'
       },
       moveTo (loc) {
-        this.layer = loc.layer
+        if (loc.layer !== 'g') {
+          this.layer = loc.layer
+        }
         let x = (1 * parseInt(this.bounds.el.clientWidth / 2)) - loc.x
         let y = (1 * parseInt(this.bounds.el.clientHeight / 2)) - loc.y
         this.move(x, y)
@@ -158,16 +165,17 @@
         this.draggable.el.style.zoom = this.zoom
       },
       tagColor (code) {
-        return this.focus === code ? 'primary' : 'secondary'
+        return this.theFocus === code ? 'primary' : ''
       },
       isObjective (code) {
-        return this.objective ? this.objective.locations.indexOf(code) > -1 : false
+        return this.objective ? this.focusedObjective.locations.indexOf(code) > -1 : false
       }
     },
     data () {
       return {
         layer: '1f',
-        zoom: 1
+        zoom: 1,
+        theFocus: null
       }
     },
     computed: {
@@ -178,7 +186,13 @@
         return this.map ? this.map.locations.filter(loc => loc.layer === 'g' || loc.layer === this.layer) : []
       },
       focusedLocation () {
-        return this.map ? this.map.locations.filter(loc => loc.code === this.focus)[0] : null
+        return this.map ? this.map.locations.filter(loc => loc.code === this.theFocus)[0] : null
+      },
+      focusedObjective () {
+        return this.map && this.objective ? this.map.objectives.filter(obj => obj.code === this.objective)[0] : null
+      },
+      focusedObjectiveLocation () {
+        return this.focusedObjective ? this.map.locations.filter(loc => loc.code === this.focusedObjective.locations[0])[0] : null
       },
       bounds () {
         let bounds = this.$refs.bounds
@@ -203,8 +217,14 @@
           this.preload()
         }
       },
+      focus () {
+        this.theFocus = this.focus
+      },
       focusedLocation () {
         this.moveTo(this.focusedLocation || { layer: this.layer, x: 0, y: 0 })
+      },
+      focusedObjective () {
+        this.moveTo(this.focusedObjectiveLocation || { layer: this.layer, x: 0, y: 0 })
       }
     }
   }

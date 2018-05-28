@@ -2,7 +2,7 @@
   <div class="tribute input-group input-group--text-field primary--text" ref="input-group">
     <label for="input">{{label}}</label>
     <div class="input-group__input">
-      <div class="input" contenteditable="true" @input="update" @tribute-replaced="update" @focusin="focus" @focusout="blur" ref="editable">
+      <div class="input" contenteditable="true" @input="update" @tribute-replaced="inserted" @focusin="focus" @focusout="blur" ref="editable">
         {{content}}
       </div>
     </div>
@@ -27,8 +27,13 @@
   border-style: none;
   width: 100%;
   color: #fff;
-  word-wrap: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
   caret-color: #fb8c00 !important;
+}
+.input span {
+  font-weight: bold;
 }
 .input:focus {
   border: none;
@@ -48,19 +53,20 @@ export default {
     required: Boolean
   },
   mounted () {
-    if (this.value) {
-      this.content = this.value
-    }
-    if (this.required) {
-      this.addClass('input-group--required')
-    }
-    if (this.content) {
-      this.blur()
-    }
     this.init()
   },
   methods: {
     init () {
+      if (this.value) {
+        this.content = this.value
+        this.$refs.editable.innerHTML = this.value
+      }
+      if (this.required) {
+        this.addClass('input-group--required')
+      }
+      if (this.content) {
+        this.blur()
+      }
       if (process.browser) {
         if (this.tribute) {
           this.tribute.append(0, this.sources, true)
@@ -72,11 +78,14 @@ export default {
           lookup: 'name',
           fillAttr: 'code',
           selectTemplate: function (item) {
-            return `<span data-code="${item.original.code}">${item.string}</span>`
+            return `<a href="#${item.original.code}">${item.original.name}</a> `
           }
         })
         this.tribute.attach(this.$refs.editable)
       }
+    },
+    inserted (event) {
+      this.update(event)
     },
     update (event) {
       this.$emit('input', this.$refs.editable.innerHTML)
@@ -107,6 +116,9 @@ export default {
   },
   watch: {
     sources () {
+      this.init()
+    },
+    value () {
       this.init()
     }
   }

@@ -109,6 +109,7 @@ export default {
       console.log('yay')
       let importService = new ImportService(this.$firestore)
       await importService.addOperators()
+      await importService.addMaps()
     }
   },
   data () {

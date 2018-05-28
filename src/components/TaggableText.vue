@@ -2,7 +2,7 @@
   <span>
     <template v-for="c in chunks" >
       <span :key="c.value" >
-        <span v-if="c.tag" v-on:click="focus(c.tag)" class="tag"><strong>{{c.value}}</strong></span>
+        <a v-if="c.tag" v-on:click="focus(c.tag)" class="tag"><strong>{{c.value}}</strong></a>
         <span v-else>{{c.value}}</span>
       </span>
     </template>
@@ -20,7 +20,7 @@ import mentions from 'mention-parser'
 export default {
   props: ['text', 'sources'],
   mounted () {
-    // console.log(this.sources)
+    // console.log(this.text)
   },
   methods: {
     focus (tag) {
@@ -41,10 +41,10 @@ export default {
       let data = parser.parseFromString(this.text, 'text/html')
       let body = data.querySelector('body')
 
-      data.querySelectorAll('span').forEach(m => {
-        let tag = m.getAttribute('data-code')
+      data.querySelectorAll('a').forEach(m => {
+        let tag = m.getAttribute('href')
         if (tag) {
-          m.innerText = '@' + tag
+          m.innerText = '@' + tag.slice(1)
         }
       })
 
@@ -70,6 +70,7 @@ export default {
       chunks.push({
         value: lastChunk
       })
+      console.log(chunks)
       return chunks
     }
   }

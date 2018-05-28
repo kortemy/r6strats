@@ -26,10 +26,10 @@ Vue.use(Vuetify, {
   }
 })
 
-Vue.config.errorHandler = (err, vm, info) => {
-  console.trace(err)
-  vm.$emit('error', err)
-}
+// Vue.config.errorHandler = (err, vm, info) => {
+//   console.trace(err)
+//   vm.$emit('error', err)
+// }
 
 Vue.config.productionTip = false
 

@@ -75,7 +75,7 @@
       }
       this.$eventBus.$emit('loading', true)
       this.strategyService = new StrategyService(this.$firestore)
-      this.myStrats.query = { 'author.code': this.$currentUser.id }
+      this.myStrats.query = { 'author.id': this.$currentUser.id }
       this.favStrats.query = { [`liked.${this.$currentUser.id}`]: true }
       this.load()
     },

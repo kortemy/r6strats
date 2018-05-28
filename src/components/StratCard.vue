@@ -90,7 +90,7 @@
         return this.strat.objective.name
       },
       isOwned () {
-        return this.$currentUser ? this.$currentUser.code === this.strat.author.code : false
+        return this.$currentUser ? this.$currentUser.id === this.strat.author.id : false
       },
       isLiked () {
         return this.$currentUser ? this.$currentUser.likes.indexOf(this.strat.code) !== -1 : false

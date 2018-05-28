@@ -10,7 +10,7 @@
             </v-avatar>
             <span class="nested"><strong>New Strategy</strong></span>
             <v-spacer></v-spacer>
-            <v-btn color="primary">
+            <v-btn color="primary" @click="save">
               <v-icon class="icon-small">{{'confirm' | icon}}</v-icon>
               <span class="nested">Save</span>
             </v-btn>
@@ -108,7 +108,7 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-card>
-              <interactive-map :map="selected.map"></interactive-map>
+              <interactive-map :map="selected.map" :objective="selected.objective.code"></interactive-map>
             </v-card>
           </v-flex>
         </v-layout>
@@ -152,8 +152,13 @@
       this.$eventBus.$emit('loading', false)
     },
     methods: {
-      save () {
+      async save () {
+        try {
+          let strategy = await this.strategyService.addStrat(this.payload)
+          this.$router.push('/strategy/' + strategy.code)
+        } catch (e) {
 
+        }
       }
     },
     data () {
@@ -164,7 +169,7 @@
           side: 'attack',
           mode: 'bomb',
           map: null,
-          objective: null,
+          objective: {},
           operators: [],
           details: null
         },
@@ -177,10 +182,11 @@
     computed: {
       payload () {
         return {
+          author: { id: this.$currentUser.id, name: this.$currentUser.name },
           side: this.selected.side,
           mode: this.selected.mode,
-          map: this.selected.map,
-          objective: this.selected.objective,
+          map: this.selected.map && { code: this.selected.map.code, name: this.selected.map.name },
+          objective: { code: this.selected.objective.code, name: this.selected.objective.name },
           operators: this.selected.operators,
           details: this.selected.details
         }

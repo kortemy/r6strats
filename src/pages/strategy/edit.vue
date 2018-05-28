@@ -63,7 +63,12 @@
             <span class="nested"><strong>Strategy details</strong></span>
           </v-card-actions>
           <v-card-text>
-            {{strat.details}}
+            <taggable-input 
+              label="General instructions"
+              v-model="strat.details"
+              :sources="locations"
+              required
+              ></taggable-input>
           </v-card-text>
           <v-card-text>
             <v-select
@@ -86,10 +91,11 @@
             </v-avatar>
             <span class="nested"><strong>{{role.name}} instructions</strong></span>
             <taggable-input 
+              v-if="map"
               :key="role.code"
               :label="`${role.name} instructions`"
               v-model="role.role"
-              :sources="map.locations"
+              :sources="locations"
               required
               ></taggable-input>
           </v-card-text>
@@ -99,7 +105,7 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-card>
-              <interactive-map :map="map" :focus="locationFocus"></interactive-map>
+              <interactive-map :map="map" :focus="locationFocus" :objective="strat.objective.code"></interactive-map>
             </v-card>
           </v-flex>
         </v-layout>
@@ -126,15 +132,18 @@
       taggableInput: TaggableInput
     },
     async created () {
+      this.$eventBus.$emit('loading', true)
+      this.strategyService = new StrategyService(this.$firestore)
+      let strat = await this.strategyService.getStrat(this.$route.params.code)
+      strat.operators = Object.values(strat.operators)
+      this.strat = strat
+      this.strat.details = strat.details
       if (!this.isOwned) {
         this.$router.push('/')
       }
-      this.$eventBus.$emit('loading', true)
-      this.strategyService = new StrategyService(this.$firestore)
       this.modes = await this.strategyService.getModes()
       this.sides = await this.strategyService.getSides()
       this.operators = await this.strategyService.getOperators()
-      this.strat = await this.strategyService.getStrat(this.$route.params.code)
       this.map = await this.strategyService.getMap(this.strat.map.code)
       this.$eventBus.$emit('loading', false)
     },
@@ -174,13 +183,16 @@
     },
     computed: {
       isOwned () {
-        return this.$currentUser ? this.$currentUser.code === this.strat.author.code : false
+        return this.$currentUser ? this.$currentUser.id === this.strat.author.id : false
       },
       isLiked () {
         return this.$currentUser ? this.$currentUser.likes.indexOf(this.strat.code) !== -1 : false
       },
       filteredOperators () {
         return this.operators.filter(op => op.side === this.strat.side || op.side === 'both')
+      },
+      locations () {
+        return this.map ? this.map.locations : []
       }
     }
   }

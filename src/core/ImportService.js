@@ -1,7 +1,8 @@
-// import axios from 'axios'
+import axios from 'axios'
 
 class ImportService {
   constructor (firestore) {
+    console.log(axios)
     this.db = {
       db: firestore,
       maps: firestore.collection('maps'),
@@ -10,19 +11,17 @@ class ImportService {
   }
 
   async addMaps () {
+    let batchInsert = this.db.db.batch()
 
+    let bank = await axios.get('/static/bank.json')
+    batchInsert.set(this.db.maps.doc('bank'), bank.data)
+    let bartlett = await axios.get('/static/bartlett.json')
+    batchInsert.set(this.db.maps.doc('bartlett'), bartlett.data)
+
+    await batchInsert.commit()
   }
 
   async addOperators () {
-    // let batchDelete = this.db.db.batch()
-
-    // let operators = await this.db.operators.get()
-    // operators.docs.forEach(doc => {
-    //   batchDelete.delete(doc.ref)
-    // })
-
-    // await batchDelete.commit()
-
     // let batchInsert = this.db.db.batch()
 
     // let response = await axios.get('/static/operators.json')

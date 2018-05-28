@@ -2,17 +2,17 @@
   "code": "bank",
   "name": "Bank",
   "objectives": [
-    { "code": "ceoexec", "name": "CEO Office / Executive Lounge", "modes": ["bomb"], "locations": [ "2f_ceo", "2f_exec" ] },
-    { "code": "openstaff", "name": "Open Area / Staff Room", "modes": ["bomb"], "locations": [ "1f_open", "1f_staff" ] },
-    { "code": "tellersarchives", "name": "Tellers / Archives", "modes": ["bomb"], "locations": [ "1f_tellerso", "1f_exec" ] },
-    { "code": "cctvlockers", "name": "CCTV Room / Lockers", "modes": ["bomb"], "locations": [ "b1_cctv", "b1_lockers" ] },
-    { "code": "vault", "name": "Vault", "modes": ["hostage"], "locations": [ "b1_vault" ] },
-    { "code": "tellers", "name": "Tellers", "modes": ["hostage"], "locations": [ "1f_tellerso" ] },
-    { "code": "staff", "name": "Staff Room", "modes": ["hostage"], "locations": [ "1f_staff" ] },
-    { "code": "ceo", "name": "CEO Office", "modes": ["hostage", "secure"], "locations": [ "2f_ceo" ] },
-    { "code": "archives", "name": "Archives", "modes": ["secure"], "locations": [ "1f_archives" ] },
-    { "code": "open", "name": "Open Area", "modes": ["secure"], "locations": [ "1f_open" ] },
-    { "code": "lockers", "name": "Lockers", "modes": ["secure"], "locations": [ "b1_lockers" ] }
+    { "code": "ceoexec", "name": "2F CEO Office / 2F Executive Lounge", "modes": ["bomb"], "locations": [ "2f_ceo", "2f_exec" ] },
+    { "code": "openstaff", "name": "1F Open Area / 1F Staff Room", "modes": ["bomb"], "locations": [ "1f_open", "1f_staff" ] },
+    { "code": "tellersarchives", "name": "1F Tellers / 1F Archives", "modes": ["bomb"], "locations": [ "1f_tellerso", "1f_exec" ] },
+    { "code": "cctvlockers", "name": "B1 CCTV Room / B1 Lockers", "modes": ["bomb"], "locations": [ "b1_cctv", "b1_lockers" ] },
+    { "code": "vault", "name": "B1 Vault", "modes": ["hostage"], "locations": [ "b1_vault" ] },
+    { "code": "tellers", "name": "1F Tellers", "modes": ["hostage"], "locations": [ "1f_tellerso" ] },
+    { "code": "staff", "name": "1F Staff Room", "modes": ["hostage"], "locations": [ "1f_staff" ] },
+    { "code": "ceo", "name": "2F CEO Office", "modes": ["hostage", "secure"], "locations": [ "2f_ceo" ] },
+    { "code": "archives", "name": "1F Archives", "modes": ["secure"], "locations": [ "1f_archives" ] },
+    { "code": "open", "name": "1F Open Area", "modes": ["secure"], "locations": [ "1f_open" ] },
+    { "code": "lockers", "name": "B1 Lockers", "modes": ["secure"], "locations": [ "b1_lockers" ] }
   ],
   "layers": ["b1", "1f", "2f", "roof"],
   "locations": [

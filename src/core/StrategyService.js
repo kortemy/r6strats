@@ -41,6 +41,17 @@ class StrategyService {
   }
 
   async addStrat (strat) {
+    let ref = await this.db.strategies.add({})
+    strat.code = ref.id
+    strat.liked = []
+    strat.rating = 0
+    strat.comments = 0
+    strat.operators = strat.operators.reduce((obj, op) => {
+      obj[op.code] = op
+      return obj
+    }, {})
+    await this.db.strategies.doc(ref.id).set(strat)
+    return strat
     // handle on backend
   }
 

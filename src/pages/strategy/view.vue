@@ -23,18 +23,21 @@
                   <v-icon light class="icon-small">{{'map' | icon}}</v-icon>
                 </v-avatar>
                 {{strat.map.name}}
+                <!-- {{strat.map}} -->
               </v-chip>
               <v-chip>
                 <v-avatar>
                   <v-icon light class="icon-small">{{'objective' | icon}}</v-icon>
                 </v-avatar>
                 {{strat.objective.name}}
+                <!-- {{strat.objective}} -->
               </v-chip>
               <v-chip class="clickable" @click="userClicked">
                 <v-avatar>
                   <v-icon light class="icon-small">{{'user' | icon}}</v-icon>
                 </v-avatar>
                 {{strat.author.name}}
+                <!-- {{strat.author}} -->
               </v-chip>
             </div>
             <v-spacer></v-spacer>
@@ -95,7 +98,7 @@
       <v-flex d-flex sm12 md6>
         <v-layout row wrap>
           <v-flex xs12>
-            <interactive-map :map="map" :objective="strat.objective" :focus="locationFocus"></interactive-map>
+            <interactive-map :map="map" :objective="strat.objective.code" :focus="locationFocus"></interactive-map>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -186,7 +189,7 @@
         return this.map ? this.map.locations : []
       },
       isOwned () {
-        return this.$currentUser ? this.$currentUser.code === this.strat.author.code : false
+        return this.$currentUser ? this.$currentUser.id === this.strat.author.id : false
       },
       isLiked () {
         return this.$currentUser ? this.$currentUser.likes.indexOf(this.strat.code) !== -1 : false
